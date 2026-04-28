@@ -17,4 +17,8 @@ struct epila * crea_epila(struct proceso* proceso);
 int inserta_epila(struct pila* pila, struct proceso* proceso);
 struct epila *saca(struct pila* pila);
 int imprimir_pila(struct pila* pila);
+int generar_log(struct pila* pila);
+int rellenar_log(struct pila* pila, FILE* file);
+int rellenar_aux(struct epila* aux, FILE* file);
+int liberar_pila(struct pila* pila);
 #endif

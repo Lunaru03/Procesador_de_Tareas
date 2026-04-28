@@ -133,3 +133,16 @@ int cola_vacia(struct cola* cola)
     if(cola->primero)
         return 0;
 }
+
+int liberar_cola(struct cola* cola)
+{
+    if(!cola || cola->primero==NULL)
+        return 1;
+    struct ecola* aux=cola->primero;
+    if(aux->elemento!=NULL)
+        free(aux->elemento);
+   
+    cola->primero=cola->primero->sig;
+    free(aux);
+    return liberar_cola(cola);
+}

@@ -25,4 +25,5 @@ int genera_numero(int min, int max);
 int inicializar_cola(struct cola *cola);
 int imprimir_cola(struct ecola *aux);
 int cola_vacia(struct cola* cola);
+int liberar_cola(struct cola* cola);
 #endif

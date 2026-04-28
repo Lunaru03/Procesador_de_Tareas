@@ -97,6 +97,7 @@ struct elista* hay_hilo_libre(struct elista** inicio)
         return (*inicio);
     return hay_hilo_libre(&((*inicio)->sig));
 }
+
 int hilos_ocupados(struct elista** inicio)
 {
     if(!(*inicio))
@@ -105,32 +106,23 @@ int hilos_ocupados(struct elista** inicio)
         return 1;
     return hilos_ocupados(&((*inicio)->sig));
 }
-struct proceso *libera_hilox(struct elista** inicio, int ID)
+struct proceso *libera_hilox(struct elista** inicio)
 {
     if(!(*inicio))
-    {
-        puts("No se encontro el hilo buscado");
         return NULL;
-    }
-        
-    if((*inicio)->hilo->ID==ID )
-    {
-        if((*inicio)->hilo->estado==0)
-        {
-            puts("Hilo encontrado: ");
-            (*inicio)->hilo->estado=1;
-            printf("(ID: %d, ESTADO: LIBRE) \n", (*inicio)->hilo->ID);
-            struct proceso* aux=(*inicio)->hilo->tarea_actual;
-            (*inicio)->hilo->tarea_actual=NULL;
-            return aux;
-        }
-        else
-        {
-            puts("Hilo ya disponible");
-            return NULL;
-        }
-    }
-    return libera_hilox(&((*inicio)->sig), ID);
+        if((*inicio)->hilo->estado==0 && genera_numero(0,1))
+            return libera_aux(inicio);
+    return libera_hilox(&((*inicio)->sig));
+}
+
+struct proceso* libera_aux(struct elista** inicio)
+{
+    printf("Hilo a liberar: %d\n ", (*inicio)->hilo->ID);
+    (*inicio)->hilo->estado=1;
+    printf("(ID: %d, ESTADO: LIBRE) \n", (*inicio)->hilo->ID);
+    struct proceso* aux=(*inicio)->hilo->tarea_actual;
+    (*inicio)->hilo->tarea_actual=NULL;
+    return aux;
 }
 
 int libera_lista(struct elista* inicio)
@@ -138,6 +130,8 @@ int libera_lista(struct elista* inicio)
     if(!inicio)
         return 1;
     struct elista *aux=inicio;
+    if(aux->hilo->tarea_actual!=NULL)
+        free(aux->hilo->tarea_actual);
     inicio=inicio->sig;
     free(aux->hilo);
     free(aux);

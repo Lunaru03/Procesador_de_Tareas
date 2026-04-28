@@ -69,3 +69,73 @@ int imprimir_pila(struct pila* pila)
     imprimir_pila(pila);
     push(pila, aux);
 }
+
+int generar_log(struct pila* pila)
+{
+    int contador=1, bandera=1;
+    char nombre[12];
+    FILE* file=NULL;
+    while(bandera)
+    {
+        sprintf(nombre, "log%d.txt", contador);
+        file=fopen(nombre, "r");
+        if(!file)
+        {
+            file=fopen(nombre, "w");
+            bandera=0;
+        }
+        else
+        {
+            fclose(file);
+            contador++;
+        }
+    }
+    if(!file)
+        return 0;
+    rellenar_log(pila, file);
+    return 1;
+}
+
+int rellenar_log(struct pila* pila, FILE* file)
+{
+    struct epila*aux = saca(pila);
+    if(!aux)
+    {
+        fclose(file);
+        return 0;
+    }
+    if(pila->n_elementos==0)
+    {
+        rellenar_aux(aux, file);
+        push(pila, aux);
+        fclose(file);
+        return 1;
+    }
+    rellenar_aux(aux, file);
+    pila->tope=aux->sig;
+    rellenar_log(pila, file);
+    push(pila, aux);
+}
+int rellenar_aux(struct epila* aux, FILE* file)
+{
+    char prioridad[12]="PRIORITARIO";
+    char prioridad2[7]="NORMAL";
+    if((aux->proceso->prioridad))
+    fprintf(file, "(PROCESO ID: %d, PRIORIDAD: %s)\n",
+    aux->proceso->ID, prioridad);
+    else
+        fprintf(file, "(PROCESO ID: %d, PRIORIDAD: %s)\n",
+        aux->proceso->ID, prioridad2);
+    return 1;
+}
+int liberar_pila(struct pila* pila)
+{
+    if(!pila || pila->tope==NULL)
+        return 1;
+    struct epila* aux=pila->tope;
+    printf("(ID: %d, PRIO: %d) (FIN)\n", aux->proceso->ID, aux->proceso->prioridad);
+    pila->tope=pila->tope->sig;
+    free(aux->proceso);
+    free(aux);
+    return liberar_pila(pila);
+}
