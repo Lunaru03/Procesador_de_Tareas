@@ -133,7 +133,6 @@ int liberar_pila(struct pila* pila)
     if(!pila || pila->tope==NULL)
         return 1;
     struct epila* aux=pila->tope;
-    printf("(ID: %d, PRIO: %d) (FIN)\n", aux->proceso->ID, aux->proceso->prioridad);
     pila->tope=pila->tope->sig;
     free(aux->proceso);
     free(aux);

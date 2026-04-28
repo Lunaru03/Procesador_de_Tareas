@@ -11,6 +11,7 @@ int procesoa_hilo(struct elista** inicio, struct cola* cola);
 int procesador_de_tareas(struct elista** inicio, struct cola* cola, struct pila* pila, int n);
 int *lista_hilos_ocupados(struct elista* inicio, int n);
 int imprimir_sistema(struct elista** inicio, struct cola* cola, struct pila* pila);
+int genera_error(struct pila* pila, struct cola* cola);
 int main(int argc, char const*argv[])
 {
     srand(time(NULL));
@@ -76,17 +77,18 @@ int procesador_de_tareas(struct elista** inicio, struct cola* cola, struct pila*
         comprobacion=hilos_trabajando(inicio, pila, n);
         if(!comprobacion) 
             return 0;
+        genera_error(pila, cola);
         system("pause");
         system("cls");
         imprimir_sistema(inicio, cola, pila);
         system("pause");
         system("cls");
     }
-    puts("terminamos el sistema");
     generar_log(pila);
     liberar_cola(cola);
     libera_lista((*inicio));
     liberar_pila(pila);
+
     return 1;
 }
 int procesoa_hilo(struct elista** inicio, struct cola* cola)
@@ -128,4 +130,24 @@ int imprimir_sistema(struct elista** inicio, struct cola* cola, struct pila* pil
     imprimir_cola(cola->primero);
     imprimir_pila(pila);
     return 1;
+}
+int genera_error(struct pila* pila, struct cola* cola)
+{
+    int n=genera_numero(1,8);
+    if(n==1)
+    {
+        struct epila* aux= saca(pila);
+        if(!aux)
+            return 0;
+        puts("Se ha generado un error. Reinicializando proceso");
+        struct proceso* proceso_aux=aux->proceso;
+        free(aux);
+        if(proceso_aux)
+        {
+            printf("El proceso (ID: %d, PRIO: %d) (FIN) volvera a ser encolado\n", proceso_aux->ID, proceso_aux->prioridad);
+            inserta_ecola(cola, proceso_aux);
+            return 1;
+        }
+    }
+    return 0;
 }
