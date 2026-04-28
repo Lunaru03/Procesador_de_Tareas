@@ -66,12 +66,19 @@ int procesador_de_tareas(struct elista** inicio, struct cola* cola, struct pila*
     np=comprobar_entrada();
     while(np>0  || !cola_vacia(cola) || hilos_ocupados(inicio))
     {
+        int bandera=1;
         if(np>0)
         {
             encola_procesos_random(cola);
             puts("imprimimos la cola");
             imprimir_cola(cola->primero);
             np--;
+            bandera=0;
+        }
+        if(bandera)
+        {
+            puts("imprimimos la cola");
+            imprimir_cola(cola->primero);
         }
         procesoa_hilo(inicio, cola);
         comprobacion=hilos_trabajando(inicio, pila, n);
@@ -111,7 +118,11 @@ int hilos_trabajando(struct elista ** lista, struct pila* pila, int n)
 {
     if(n==0 || !lista) 
         return 0;
-    int min=1, max=n/2, hilos;
+    int min=1, max=0, hilos;
+    if(n!=1)
+        max=n/2;
+    else
+        max=n;
     struct proceso* proceso_aux;
     hilos=genera_numero(min, max);
     imprime_lista((*lista));
@@ -127,6 +138,7 @@ int hilos_trabajando(struct elista ** lista, struct pila* pila, int n)
 int imprimir_sistema(struct elista** inicio, struct cola* cola, struct pila* pila)
 {
     imprime_lista((*inicio));
+    puts("cola de procesos");
     imprimir_cola(cola->primero);
     imprimir_pila(pila);
     return 1;

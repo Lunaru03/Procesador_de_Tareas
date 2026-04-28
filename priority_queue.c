@@ -119,10 +119,10 @@ int imprimir_cola(struct ecola *aux)
         return 1;
     if(aux->sig==NULL)
     {
-        printf("%d\n", aux->elemento->ID);
+        printf("(ID: %d, PRIORIDAD: %d)\n", aux->elemento->ID, aux->elemento->prioridad);
         return 1;
     }
-    printf("%d,", aux->elemento->ID);
+    printf("(ID: %d, PRIORIDAD: %d)\n", aux->elemento->ID, aux->elemento->prioridad);
     return imprimir_cola(aux->sig);
 }
 
@@ -139,7 +139,7 @@ int liberar_cola(struct cola* cola)
     if(!cola || cola->primero==NULL)
         return 1;
     struct ecola* aux=cola->primero;
-    if(aux && aux->elemento!=NULL)
+    if(aux->elemento!=NULL)
         free(aux->elemento);
     cola->primero=cola->primero->sig;
     free(aux);
