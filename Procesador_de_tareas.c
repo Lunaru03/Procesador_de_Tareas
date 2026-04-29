@@ -188,4 +188,5 @@ int pausar()
     puts("pulsa una tecla para continuar");
     fflush(stdout);
     getchar();
+    return 1;
 }
