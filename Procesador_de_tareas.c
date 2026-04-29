@@ -48,12 +48,12 @@ int comienzo()
         return 0;
     return 1;
 }
-int comprobar_entrada()//funcion que encontre en w3schools para comprobar que un numero sea un entero positivo.
+int comprobar_entrada()//funcion que encontre en w3schools para comprobar que un numero sea un entero
 {
     int n=0;
     char entrada[100];
     while (fgets(entrada, sizeof(entrada), stdin)) {
-    if (sscanf(entrada, "%d", &n) == 1) {
+    if (sscanf(entrada, "%d", &n) == 1 && n>0) {
       break; // Success: break out of the loop
     } else {
       printf("Entrada invalida, por favor ingresa un numero entero positivo: "); 
