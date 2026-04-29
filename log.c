@@ -64,7 +64,6 @@ struct epila *saca(struct pila* pila)
 //recorremos recursivamente la pila para imprimir los procesos guardados, al terminar todas las llamadas recursivas, volvemos a pushear todos los nodos.
 int imprimir_pila(struct pila* pila)
 {
-    puts("imprimiendo procesos ya finalizados (log)");
     struct epila *aux=saca(pila);
     if(!aux)// comprobacion por robustez.
         return 0;
@@ -74,7 +73,7 @@ int imprimir_pila(struct pila* pila)
         push(pila,aux);
         return 1;
     }
-    printf("(ID: %d, PRIO: %d) (FIN)\n", aux->proceso->ID, aux->proceso->prioridad);
+    printf("(ID: %d, PRIO: %d)\n", aux->proceso->ID, aux->proceso->prioridad);
     imprimir_pila(pila);
     push(pila, aux);
 }

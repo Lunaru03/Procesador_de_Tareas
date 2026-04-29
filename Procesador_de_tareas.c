@@ -12,6 +12,8 @@ int procesador_de_tareas(struct elista** inicio, struct cola* cola, struct pila*
 int *lista_hilos_ocupados(struct elista* inicio, int n);
 int imprimir_sistema(struct elista** inicio, struct cola* cola, struct pila* pila);
 int genera_error(struct pila* pila, struct cola* cola);
+int pausar();
+int limpiar();
 int main(int argc, char const*argv[])
 {
     srand(time(NULL));//inicializamos la semilla para rand.
@@ -39,8 +41,8 @@ int comienzo()
     crea_pool(&inicio, n);
     puts("Visualizacion de la threadpool con la que se trabajara");//imprimimos la lista para que el usuario pueda ver que se crearon los hilos que el decidio
     imprime_lista(inicio);
-    system("pause");
-    system("cls");
+    pausar();
+    limpiar();
     comprobacion=procesador_de_tareas(&inicio, &cola, &pila, n);//llamamos a la funcion que lleva la mayoria del proceso.
     if(!comprobacion)
         return 0;
@@ -68,11 +70,14 @@ int procesador_de_tareas(struct elista** inicio, struct cola* cola, struct pila*
     if(n==0 || !inicio)//comprobaciones por robustez.
         return 0;
     int np, comprobacion=1; //np= numero de veces que se generan procesos.
+    getchar();
     puts("Cuantas llegadas de procesos quieres que el sistema haga (la cantidad de procesos por llegada es aleatoria) ");
     np=comprobar_entrada();//el usuario decide cuantas veces generamos procesos y comprobamos su entrada.
     while(np>0  || !cola_vacia(cola) || hilos_ocupados(inicio))//acabamos hasta que todos los procesos terminen.
     {
-        int bandera=1;
+        limpiar();
+        printf("                       ITERACION ACTUAL                          \n");
+        puts("=====================================================================");
         if(np>0)
         {//llamamos encolar procesos las veces que diga el usuario.
             encola_procesos_random(cola);
@@ -85,17 +90,16 @@ int procesador_de_tareas(struct elista** inicio, struct cola* cola, struct pila*
         if(!comprobacion)//si algo salio mal en hilos trabajando, salimos para evitar que el programa truene.
             return 0;
         genera_error(pila, cola);//llamamos a la funcion que genera errores dinamicamente.
-        system("pause");
-        system("cls");
+        puts("=====================================================================");
+        puts("--- IMPRIMIENDO ESTADO DEL SISTEMA---");
         imprimir_sistema(inicio, cola, pila);//imprimimos todo.
-        system("pause");
-        system("cls");
+        pausar();
+        getchar();
     }
     generar_log(pila);
     liberar_cola(cola);
     libera_lista((*inicio));
     liberar_pila(pila);
-
     return 1;
 }
 
@@ -146,6 +150,7 @@ int imprimir_sistema(struct elista** inicio, struct cola* cola, struct pila* pil
     imprime_lista((*inicio));
     puts("cola de procesos");
     imprimir_cola(cola->primero);
+    puts("imprimiendo procesos ya finalizados (log)");
     imprimir_pila(pila);
     return 1;
 }
@@ -170,4 +175,17 @@ int genera_error(struct pila* pila, struct cola* cola)
         }
     }
     return 0;
+}
+
+int limpiar()
+{
+    printf("\e[1;1H\e[2J");
+    return 1;
+}
+
+int pausar()
+{
+    puts("pulsa una tecla para continuar");
+    fflush(stdout);
+    getchar();
 }
