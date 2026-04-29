@@ -21,7 +21,6 @@ int cola_procesos_trabajando(struct cola *cola);
 int encola_procesos_random(struct cola *cola);
 struct proceso *genera_proceso(struct cola *cola);
 int genera_id();
-int genera_numero(int min, int max);
 int inicializar_cola(struct cola *cola);
 int imprimir_cola(struct ecola *aux);
 int cola_vacia(struct cola* cola);
