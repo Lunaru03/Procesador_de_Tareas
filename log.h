@@ -1,5 +1,6 @@
 #ifndef log_H
 #define log_H
+#include <stdio.h>
 #include "comun.h"
 //cada nodo de pila tambien tiene el struct proceso para poder guardarlo y luego imprimirlo en un txt.
 struct epila{
