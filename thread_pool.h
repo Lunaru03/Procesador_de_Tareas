@@ -1,11 +1,13 @@
 #ifndef thread_pool_H
 #define thread_pool_H
 #include "comun.h"
+//El hilo tiene un campo proceso para recibirlo de la cola, tambien tienen un identificador y un estado para saber si ya tienen proceso asignado o no.
 struct hilo{
     int ID;
     int estado;
     struct proceso* tarea_actual;
 };
+//Cada nodo de la lista tiene un hilo (este modelo permitiria una programacion multihilo)
 struct elista{
     struct hilo* hilo;
     struct elista* sig;

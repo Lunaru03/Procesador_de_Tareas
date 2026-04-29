@@ -2,13 +2,13 @@
 #define priority_queue_H
 #include <stdlib.h>
 #include <stdio.h>
-#include <time.h>
 #include "comun.h"
+//cada elemento de cola posee un proceso y un puntero al siguiente elemento de la cola.
 struct ecola{
     struct proceso* elemento;
     struct ecola* sig;
 };
-
+// Un struct para encapsular los dos punteros, porque es bastante practico.
 struct cola{
     struct ecola* primero;
     struct ecola* ultimo;

@@ -1,11 +1,13 @@
 #ifndef log_H
 #define log_H
 #include "comun.h"
+//cada nodo de pila tambien tiene el struct proceso para poder guardarlo y luego imprimirlo en un txt.
 struct epila{
     struct proceso * proceso;
     struct epila * sig;
 };
 
+//encapsulamiento de los parametros de la pila.
 struct pila{
     struct epila * tope;
     int n_elementos;
